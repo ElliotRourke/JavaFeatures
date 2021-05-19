@@ -1,7 +1,9 @@
 package java8;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -38,6 +40,7 @@ public class StreamsDigest {
         System.out.println("Does this list have the character 'a'? : " + hasA);
 
         //Map & reduce!
+        //We convert the elements of a stream to a new element using a specified function! The new elements are then collected into a new stream!
         Stream<String> myFifthStream = Stream.of("a", "b", "c", "d", "d");
         int result = myFifthStream.map(this::getCharNumber).reduce(0, Integer::sum);
         System.out.println("The sum of all char codes is : " + result);
@@ -46,6 +49,38 @@ public class StreamsDigest {
         Stream<String> mySixthStream = Stream.of("a", "b", "c", "d", "d");
         long numberOfLetterD = mySixthStream.map(this::isLetterD).filter(bool -> bool).count();
         System.out.println("The the number of letter Ds is : " + numberOfLetterD);
+
+        //We can also use flatmap to iterate and perform operations over the inner collections of a collection!
+        List<List<String>> nestedCollection = new ArrayList<>();
+        List<String> arrayListOne = new ArrayList<>();
+        arrayListOne.add("a");
+        arrayListOne.add("b");
+        arrayListOne.add("c");
+        arrayListOne.add("d");
+        List<String> arrayListTwo = new ArrayList<>();
+        arrayListTwo.add("d");
+        arrayListTwo.add("d");
+        arrayListTwo.add("d");
+        arrayListTwo.add("d");
+        arrayListTwo.add("d");
+        arrayListTwo.add("d");
+        arrayListTwo.add("d");
+
+        nestedCollection.add(arrayListOne);
+        nestedCollection.add(arrayListTwo);
+
+        long numberOfLetterDInNestedCollection
+                = nestedCollection
+                        .stream()
+                        .flatMap(Collection::stream)
+                        .map(this::isLetterD)
+                        .filter(bool -> bool)
+                        .count();
+
+        System.out.println("The the number of letter Ds in this nested collection is : " + numberOfLetterDInNestedCollection);
+
+        //Matching!
+
     }
 
 
