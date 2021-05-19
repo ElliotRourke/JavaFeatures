@@ -1,11 +1,11 @@
 package java8;
 
 import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Stream.empty;
 
 public class StreamsDigest {
 
@@ -79,8 +79,55 @@ public class StreamsDigest {
 
         System.out.println("The the number of letter Ds in this nested collection is : " + numberOfLetterDInNestedCollection);
 
-        //Matching!
+        //Matching! The Stream API provides a set of self-evident and handy methods to validate elements of a sequence.
 
+        //anyMatch() checks if any elements in the collection being streamed satisfy the given predicate
+        List<String> anyMatchList = new ArrayList<>();
+        anyMatchList.add("a");
+        anyMatchList.add("b");
+        anyMatchList.add("c");
+        anyMatchList.add("d");
+
+        boolean hasAnyMatch = anyMatchList.stream().anyMatch("c"::equalsIgnoreCase);
+        System.out.println("Do any elements in the list match the character 'c'? : " + hasAnyMatch);
+
+        //allMatch() checks if all elements in the collection being streamed satisfy the given predicate
+        List<String> allMatchList = new ArrayList<>();
+        allMatchList.add("a");
+        allMatchList.add("a");
+        allMatchList.add("a");
+        allMatchList.add("d");
+        boolean doAllMatch = allMatchList.stream().allMatch("a"::equalsIgnoreCase);
+        System.out.println("Do all elements in the list match the character 'a'? : " + doAllMatch);
+
+        List<String> noneMatchList = new ArrayList<>();
+        noneMatchList.add("w");
+        noneMatchList.add("x");
+        noneMatchList.add("y");
+        noneMatchList.add("z");
+        boolean hasNoMatch = noneMatchList.stream().noneMatch("a"::equalsIgnoreCase);
+        System.out.println("Do no elements in the list match the character 'a'? : " + hasNoMatch);
+
+        //For empty streams allMatch returns true, as all elements of the list would satisfy the predicate.
+        boolean isTrueWhenEmpty = Stream.empty().allMatch(Objects::nonNull);
+        System.out.println("An empty stream with allMatch is always true : " + isTrueWhenEmpty);
+
+        //For empty streams anyMatch returns false, as no elements of the list can satisfy the predicate.
+        boolean isFalseWhenEmpty = Stream.empty().anyMatch(Objects::nonNull);
+        System.out.println("An empty stream with anyMatch is always false : " + isFalseWhenEmpty);
+
+        //Reduction! We saw some earlier, this operation allows a sequence of elements in a collection to be reduced down to one value..
+        //..according to a specified function.
+        List<String> abcList = Arrays.asList("a", "b", "c");
+        String abcListConcat = abcList.stream().reduce("", (a,b) -> a + b); //Note the identity parameter is the starting value for the accumulation function
+        System.out.println("The reduced abc list : " + abcListConcat);
+
+        //Collecting! This operation is handy for reducing a Stream back into a Collection of elements.
+        //Allowing us to perform functions on elements via a Stream and then collect the elements once again.
+        //We can also create our own custom collectors if required.
+        List<String> lowerCaseList = Arrays.asList("a", "b", "c");
+        List<String> upperCaseList = lowerCaseList.stream().map(String::toUpperCase).collect(Collectors.toList());
+        System.out.println("The lowerCaseList has been converted to an upperCaseList: " + upperCaseList);
     }
 
 
