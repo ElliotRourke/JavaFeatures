@@ -1,5 +1,6 @@
 package java8.optionals;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,14 +19,24 @@ public class OptionalDigest {
         //We can use optionals to also substitute empty optional values with new instances of an object, for example..
         List<String> optionalList = getList().orElseGet(ArrayList::new);
 
+        //What if we need to reach some nested field in an object? Previously we may need many checks before reading the field...
+        Optional<User> user = Optional.ofNullable(getUser());
+        String result = user
+                .map(User::getAddress)
+                .map(Address::getMyAddress)
+                .orElse("Could not get address!");
     }
 
-    public String getString() {
+    private String getString() {
         return null;
     }
 
-    public Optional<List<String>> getList() {
+    private Optional<List<String>> getList() {
         return Optional.empty();
+    }
+
+    private User getUser() {
+        return new User();
     }
 
 }
