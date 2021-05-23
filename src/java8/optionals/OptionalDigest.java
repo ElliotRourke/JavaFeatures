@@ -42,8 +42,4 @@ public class OptionalDigest {
         return new User();
     }
 
-    private Optional<User> getOptionalUser() {
-        return Optional.of(new User());
-    }
-
 }
