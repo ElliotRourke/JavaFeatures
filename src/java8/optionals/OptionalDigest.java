@@ -25,6 +25,9 @@ public class OptionalDigest {
                 .map(User::getAddress)
                 .map(Address::getMyAddress)
                 .orElse("Could not get address!");
+
+        //We can also just make our above pojo return optionals in its getter using Optional.of(..) and then use Stream<T> flatmap to process the object.
+
     }
 
     private String getString() {
@@ -37,6 +40,10 @@ public class OptionalDigest {
 
     private User getUser() {
         return new User();
+    }
+
+    private Optional<User> getOptionalUser() {
+        return Optional.of(new User());
     }
 
 }
